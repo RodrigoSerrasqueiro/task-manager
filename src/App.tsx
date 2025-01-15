@@ -19,6 +19,13 @@ export function App() {
       <div className='w-full max-w-screen-lg flex flex-col gap-3'>
         <Header />
 
+        {data.tasks.length < 1 && (
+          <h2 className='text-lg font-semibold text-center mt-20'>
+            Você ainda não criou nenhuma tarefa. Aproveite para criar a primeira
+            agora mesmo!!! 😀
+          </h2>
+        )}
+
         {tasksPending.length > 0 && (
           <div className='flex items-center gap-3'>
             <h2>Pendentes</h2>

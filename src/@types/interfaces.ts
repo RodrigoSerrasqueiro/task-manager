@@ -20,8 +20,20 @@ export interface Task {
   __v: number;
 }
 
+export interface UpdatedTask {
+  id: string;
+  title: string;
+  description: string;
+  images: [string];
+}
+
 export interface CardTaskProps {
   task: Task;
+}
+
+export interface UpdateTaskFormProps {
+  task: UpdatedTask;
+  onClose: () => void;
 }
 
 export interface ChangeTaskCompletionProps {
@@ -40,4 +52,8 @@ export interface NewTask {
 
 export interface CreateTaskProps {
   task: NewTask;
+}
+
+export interface UpdateTaskProps {
+  updatedTask: UpdatedTask;
 }

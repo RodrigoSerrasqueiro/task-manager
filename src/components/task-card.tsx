@@ -25,26 +25,38 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog';
 import { Toggle } from '@/components/ui/toggle';
 import { useTasksContext } from '@/contexts/tasksContext';
 import { changeTaskCompletion } from '@/routes/changeTaskCompletion';
 import { useMutation } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { CheckCircle, Circle, Edit, Trash } from 'lucide-react';
-import { useId } from 'react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
 import { deleteTask } from '@/routes/deleteTask';
+import { useState } from 'react';
+import { UpdateTaskForm } from './update-task-form';
 
 export function TaskCard({ task }: CardTaskProps) {
   const { refetchTaskData } = useTasksContext();
-  const key = useId();
+  const [updateTaskDialogIsOpen, setUpdateDialogIsOpen] =
+    useState<boolean>(false);
 
   const changeTaskCompletionRequest = useMutation({
     mutationFn: changeTaskCompletion,
-    onSuccess: () => {
+    onSuccess: data => {
       refetchTaskData?.();
-      toast.success('Parabéns!!! 🎉🥳 Você completou mais uma tarefa.');
+      if (data.taskCompleted.completed) {
+        toast.success('Parabéns!!! 🎉🥳 Você completou mais uma tarefa.');
+      }
     },
     onError: (error: AxiosError) => {
       if (error.response) {
@@ -84,9 +96,32 @@ export function TaskCard({ task }: CardTaskProps) {
         className={`w-full ${task.completed ? 'border-primary' : 'border'}`}
       >
         <div className='absolute right-2 top-2 flex items-center gap-3'>
-          <Button size='icon' variant='ghost'>
-            <Edit />
-          </Button>
+          <Dialog
+            open={updateTaskDialogIsOpen}
+            onOpenChange={setUpdateDialogIsOpen}
+          >
+            <DialogTrigger asChild>
+              <Button size='icon' variant='ghost'>
+                <Edit />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className='sm:max-w-[425px]'>
+              <DialogHeader>
+                <DialogTitle>Editar</DialogTitle>
+                <DialogDescription>
+                  Edite as informações da sua tarefa
+                </DialogDescription>
+              </DialogHeader>
+              <div className='grid gap-4 py-4'>
+                <div className='flex flex-col gap-2'>
+                  <UpdateTaskForm
+                    task={task}
+                    onClose={() => setUpdateDialogIsOpen(false)}
+                  />
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -125,18 +160,19 @@ export function TaskCard({ task }: CardTaskProps) {
           <Carousel className='w-full'>
             <CarouselContent>
               {task.images.map(image => (
-                <CarouselItem key={key} className='relative'>
-                  <div>
+                <CarouselItem key={image}>
+                  <div className='relative'>
                     <img
                       src={image}
                       alt={`Imagem associada à tarefa ${task.title}`}
+                      className='w-full h-[150px]'
                     />
+                    <CarouselPrevious className='absolute left-0 top-1/2' />
+                    <CarouselNext className='absolute right-0 top-1/2' />
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className='absolute left-0' />
-            <CarouselNext className='absolute right-0' />
           </Carousel>
         </CardContent>
         <CardFooter className='flex justify-center'>

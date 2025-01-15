@@ -18,16 +18,17 @@ import { useMutation } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useTasksContext } from '@/contexts/tasksContext';
-import { createTask } from '@/routes/createTask';
-import type { NewTask } from '@/@types/interfaces';
+import type { UpdatedTask, UpdateTaskFormProps } from '@/@types/interfaces';
 import { images } from '@/utils/imagesData';
 import { cn } from '@/lib/utils';
+import { updateTask } from '@/routes/updateTask';
 
-export function CreateTaskForm() {
+export function UpdateTaskForm({ task, onClose }: UpdateTaskFormProps) {
   const { data, refetchTaskData } = useTasksContext();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const formSchema = z.object({
+    id: z.string(),
     title: z.string().min(3, {
       message: 'O título da tarefa deve conter pelo menos 3 caracteres.'
     }),
@@ -42,29 +43,31 @@ export function CreateTaskForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      images: []
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      images: task.images
     }
   });
 
-  const createTaskRequest = useMutation({
-    mutationFn: createTask,
+  const updateTaskRequest = useMutation({
+    mutationFn: updateTask,
     onSuccess: () => {
-      toast.success('Nova tarefa criada com sucesso!');
+      toast.success('Tarefa editada com sucesso!');
       resetForm();
+      onClose();
       refetchTaskData?.();
     },
     onError: (error: AxiosError) => {
       if (error.response) {
-        setErrorMessage('Erro ao criar nova tarefa');
+        setErrorMessage('Erro ao atualizar tarefa');
         console.error(error.response.data);
       }
     }
   });
 
-  const handleSubmit = (formData: NewTask) => {
-    createTaskRequest.mutate({ task: formData });
+  const handleSubmit = (formData: UpdatedTask) => {
+    updateTaskRequest.mutate({ updatedTask: formData });
   };
 
   const checkKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -174,17 +177,17 @@ export function CreateTaskForm() {
               variant='secondary'
               onClick={resetForm}
             >
-              limpar
+              redefinir
             </Button>
             <Button
               type='submit'
               className='uppercase font-semibold w-[170px]'
               onClick={form.handleSubmit(handleSubmit)}
             >
-              {createTaskRequest.isPending ? (
+              {updateTaskRequest.isPending ? (
                 <LoaderIcon className='animate-spin' />
               ) : (
-                'criar tarefa'
+                'salvar alterações'
               )}
             </Button>
           </div>
