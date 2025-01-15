@@ -1,4 +1,6 @@
 import type { TasksData } from '@/@types/interfaces';
+import { ErrorPage } from '@/pages/error';
+import { LoadingPage } from '@/pages/loading';
 import { getAllTasks } from '@/routes/getAllTasks';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, type ReactNode, useContext } from 'react';
@@ -25,8 +27,13 @@ export const TasksDataContextProvider = ({
     staleTime: 60 * 1000
   });
 
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
   if (isError) {
-    console.log('Erro ao buscar dados', error);
+    console.error(error);
+    return <ErrorPage />;
   }
 
   if (!data) {
