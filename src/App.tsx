@@ -1,3 +1,7 @@
+import { Header } from './components/header';
+import { PageContainer } from './components/page-container';
+import { TaskCard } from './components/task-card';
+import { Separator } from './components/ui/separator';
 import { useTasksContext } from './contexts/tasksContext';
 
 export function App() {
@@ -7,7 +11,40 @@ export function App() {
     return;
   }
 
-  console.log(data);
+  const tasksCompleteds = data.tasks.filter(task => task.completed);
+  const tasksPending = data.tasks.filter(task => !task.completed);
 
-  return <div className='text-white'>task manager</div>;
+  return (
+    <PageContainer>
+      <div className='w-full max-w-screen-lg flex flex-col gap-3'>
+        <Header />
+
+        {tasksPending.length > 0 && (
+          <div className='flex items-center gap-3'>
+            <h2>Pendentes</h2>
+            <Separator />
+          </div>
+        )}
+
+        <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3'>
+          {tasksPending.map(task => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </div>
+
+        {tasksCompleteds.length > 0 && (
+          <div className='flex items-center gap-3 my-3'>
+            <h2>Concluídas</h2>
+            <Separator />
+          </div>
+        )}
+
+        <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3'>
+          {tasksCompleteds.map(task => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </div>
+      </div>
+    </PageContainer>
+  );
 }

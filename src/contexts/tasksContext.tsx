@@ -1,4 +1,4 @@
-import type { Tasks } from '@/@types/tasksTypes';
+import type { TasksData } from '@/@types/interfaces';
 import { getAllTasks } from '@/routes/getAllTasks';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, type ReactNode, useContext } from 'react';
@@ -10,8 +10,8 @@ interface ContextProviderProps {
 interface ContextProps {
   isLoading?: boolean;
   isError?: boolean;
-  data?: Tasks;
-  refetchUserData?: () => void;
+  data?: TasksData;
+  refetchTaskData?: () => void;
 }
 
 const StateContext = createContext<ContextProps>({});
@@ -39,7 +39,7 @@ export const TasksDataContextProvider = ({
         data,
         isLoading,
         isError,
-        refetchUserData: refetch
+        refetchTaskData: refetch
       }}
     >
       {children}
