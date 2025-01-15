@@ -1,50 +1,52 @@
-# React + TypeScript + Vite
+# Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Instruções de Instalação e Configuração
 
-Currently, two official plugins are available:
+Este documento fornece todas as instruções necessárias para configurar e executar o projeto localmente.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Pré-requisitos
 
-## Expanding the ESLint configuration
+1. **Node.js**:
+   - Certifique-se de que o Node.js está instalado na sua máquina (recomendado: versão `>=18`). Caso não tenha o Node.js instalado, [baixe aqui](https://nodejs.org/).
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+2. **Git**:
+   - Certifique-se de que o Git está instalado. Caso não esteja, [baixe aqui](https://git-scm.com/).
 
-- Configure the top-level `parserOptions` property like this:
+### Passos para Configuração
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. **Clonar o Repositório**
+   ```bash
+   git clone https://github.com/RodrigoSerrasqueiro/task-manager.git
+   cd task-manager
+   ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. **Instalar Dependências**
+   - Instale as dependências do projeto:
+   ```bash
+   npm install
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+3. **Configurar Variáveis de Ambiente**
+   - Crie um arquivo `.env` na raiz do projeto com base no arquivo `.env.example`. O `.env.example` contém os nomes das variáveis de ambiente necessárias. Certifique-se de preencher as variáveis corretamente para o funcionamento do projeto.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+     **Exemplo:**
+     ```
+     VITE_API_BASE_URL=https://api.example.com
+     ```
+
+4. **Executar o Projeto**
+   - Para iniciar o projeto em ambiente de desenvolvimento, execute o comando abaixo:
+   ```bash
+   npm run dev
+   ```
+
+   O projeto estará acessível no endereço [http://localhost:5173](http://localhost:5173) (ou na porta configurada).
+
+### Recursos Adicionais
+
+- **Scripts Disponíveis:**
+  - `npm run dev`: Inicia o servidor de desenvolvimento.
+  - `npm run preview`: Pré-visualiza o build em um servidor local.
+
+### Suporte
+Se encontrar algum problema, sinta-se à vontade para abrir uma **issue** no repositório ou entre em contato diretamente com o mantenedor do projeto.
