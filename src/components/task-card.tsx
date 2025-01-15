@@ -132,7 +132,7 @@ export function TaskCard({ task }: CardTaskProps) {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Tem certeza que deseja deletar essa tarefa??
+                  Tem certeza que deseja deletar essa tarefa?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   Essa ação não poderá ser desfeita futuramente.
