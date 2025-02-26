@@ -57,3 +57,4 @@ export interface CreateTaskProps {
 export interface UpdateTaskProps {
   updatedTask: UpdatedTask;
 }
+//types
