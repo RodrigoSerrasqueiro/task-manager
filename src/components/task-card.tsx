@@ -93,7 +93,7 @@ export function TaskCard({ task }: CardTaskProps) {
   return (
     <div>
       <Card
-        className={`w-full ${task.completed ? 'border-primary' : 'border'}`}
+        className={`w-full max-w-[400px] ${task.completed ? 'border-primary' : 'border'}`}
       >
         <div className='absolute right-2 top-2 flex items-center gap-3'>
           <Dialog
